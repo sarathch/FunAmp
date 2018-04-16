@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">FunAmpJ</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="success_song_play_message"> is playing!</string>
+    <string name="success_song_stop_message"> Media Player is stopped!</string>
+    <string name="failure_song_message"> Media Player is having issues right now!</string>
+    <string name="no_music_found">You have no songs available! </string>
+    <string name="no_music_add"> Download songs into your phone! </string>
+</resources>
