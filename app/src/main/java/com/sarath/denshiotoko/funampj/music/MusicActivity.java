@@ -3,25 +3,42 @@ package com.sarath.denshiotoko.funampj.music;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
+import com.google.gson.Gson;
 import com.sarath.denshiotoko.funampj.R;
+import com.sarath.denshiotoko.funampj.data.Song;
 import com.sarath.denshiotoko.funampj.util.ActivityUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class MusicActivity extends DaggerAppCompatActivity implements MusicFragment.OnFragmentInteractionListener{
+public class MusicActivity extends DaggerAppCompatActivity implements MusicFragment.OnFragmentInteractionListener, LyricFragment.OnFragmentInteractionListener{
 
     @Inject
     MusicPresenter mMusicPresenter;
     @Inject
     Lazy<MusicFragment> musicFragmentProvider;
+
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
+    private Song currentSongState = null;
 
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
@@ -30,11 +47,14 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
+        viewPager = findViewById(R.id.viewpager);
+
+        tabLayout = findViewById(R.id.tabs);
 
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
@@ -63,7 +83,7 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
             }
         } else {
             // Permission has already been granted
-            loadFragment();
+            startLoadingViews();
         }
 
     }
@@ -79,7 +99,7 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    loadFragment();
+                    startLoadingViews();
                 } else {
 
                     // permission denied, boo! Disable the
@@ -94,19 +114,58 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onFragmentInteraction(Song song) {
+        currentSongState = song;
     }
 
-    private void loadFragment(){
+    private void startLoadingViews(){
+        setUpViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+    }
 
-        MusicFragment musicFragment =
-                (MusicFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (musicFragment == null) {
-            // Get the fragment from dagger
-            musicFragment = musicFragmentProvider.get();
-            ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), musicFragment, R.id.contentFrame);
+    private void setUpViewPager(ViewPager viewPager){
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        //send current song state to lyric fragment
+        Fragment lyricFragment = new LyricFragment();
+        Bundle bundle = new Bundle();
+        String currentSongStr = "";
+        if(currentSongState!=null)
+            currentSongStr = new Gson().toJson(currentSongState);
+        bundle.putString(getResources().getString(R.string.key_curr_song), currentSongStr);
+        lyricFragment.setArguments(bundle);
+
+        adapter.addFragment(new MusicFragment(), getResources().getString(R.string.music_fragment_title));
+        adapter.addFragment(lyricFragment, getResources().getString(R.string.lyric_fragment_title));
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 }

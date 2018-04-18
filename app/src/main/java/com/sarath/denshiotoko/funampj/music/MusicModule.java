@@ -18,6 +18,10 @@ public abstract class MusicModule {
     @ContributesAndroidInjector
     abstract MusicFragment tasksFragment();
 
+    @FragmentScoped
+    @ContributesAndroidInjector
+    abstract LyricFragment lyricFragment();
+
     @ActivityScoped
     @Binds
     abstract MusicContract.Presenter taskPresenter(MusicPresenter presenter);

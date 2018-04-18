@@ -38,12 +38,14 @@ public class MusicRepositoryImpl implements MusicRepository{
         if (songCursor != null && songCursor.moveToFirst()) {
             int songId = songCursor.getColumnIndex(MediaStore.Audio.Media._ID);
             int songTitle = songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
+            int songArtist = songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
             int songData = songCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
             do {
                 Long currentId = songCursor.getLong(songId);
                 String currentTitle = songCursor.getString(songTitle);
                 String currentSongData = songCursor.getString(songData);
-                musicList.add(new Song(currentId, currentTitle, currentSongData));
+                String currentSongArtist = songCursor.getString(songArtist);
+                musicList.add(new Song(currentId, currentTitle, currentSongArtist, currentSongData));
             } while (songCursor.moveToNext());
             songCursor.close();
         }

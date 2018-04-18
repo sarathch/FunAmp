@@ -41,8 +41,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @ActivityScoped
 public class MusicFragment extends DaggerFragment implements MusicContract.MusicView{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     @Inject
     MusicContract.Presenter mPresenter;
@@ -74,19 +72,18 @@ public class MusicFragment extends DaggerFragment implements MusicContract.Music
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.takeView(this);
+        mPresenter.takeMusicView(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPresenter.dropView();//prevent leaking activity in
+        mPresenter.dropMusicView();//prevent leaking activity in
         // case presenter is orchestrating a long running task
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_music, container, false);
@@ -102,10 +99,9 @@ public class MusicFragment extends DaggerFragment implements MusicContract.Music
         return root;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void sendStateToActivity(Song song) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(song);
         }
     }
 
@@ -165,8 +161,7 @@ public class MusicFragment extends DaggerFragment implements MusicContract.Music
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Song song);
     }
 
     public interface SongItemListener {
@@ -183,6 +178,7 @@ public class MusicFragment extends DaggerFragment implements MusicContract.Music
     SongItemListener mItemListener = new SongItemListener() {
         @Override
         public void onSongPlayClick(Song clickedSong) {
+            sendStateToActivity(clickedSong);
             mPresenter.playSong(clickedSong);
         }
 

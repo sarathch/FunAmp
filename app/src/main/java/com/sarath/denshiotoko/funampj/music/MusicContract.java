@@ -1,6 +1,5 @@
 package com.sarath.denshiotoko.funampj.music;
 
-import com.sarath.denshiotoko.funampj.BasePresenter;
 import com.sarath.denshiotoko.funampj.BaseView;
 import com.sarath.denshiotoko.funampj.data.Song;
 
@@ -20,7 +19,15 @@ public interface MusicContract {
 
     }
 
-    interface Presenter extends BasePresenter<MusicView>{
+    interface LyricView extends BaseView<Presenter>{
+
+        void setCurrentSongDetails(Song song);
+
+        void showLyrics(String lyrics);
+
+    }
+
+    interface Presenter {
 
         //fetch Songs
         void loadMusic();
@@ -30,6 +37,36 @@ public interface MusicContract {
 
         // stop songs
         void stopSong();
+
+        //fetch Lyrics
+        void loadSongLyrics();
+
+        // fetch Current Song
+        Song fetchCurrentSongState();
+
+        /**
+         * Binds presenter with Music view when resumed. The Presenter will perform initialization here.
+         *
+         * @param view the view associated with this presenter
+         */
+        void takeMusicView(MusicView view);
+
+        /**
+         * Drops the reference to the view when destroyed
+         */
+        void dropMusicView();
+
+        /**
+         * Binds presenter with Music view when resumed. The Presenter will perform initialization here.
+         *
+         * @param view the view associated with this presenter
+         */
+        void takeLyricView(LyricView view);
+
+        /**
+         * Drops the reference to the view when destroyed
+         */
+        void dropLyricView();
 
     }
 }
