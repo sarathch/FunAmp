@@ -20,7 +20,7 @@ Android SDK 17+
 * [Espresso](https://github.com/googlesamples/android-testing/tree/master/ui/espresso)  - For instrumentaion testing
 * [JUnit](https://mvnrepository.com/artifact/junit/junit), [Mockito](http://site.mockito.org/), [Hamcrest](http://hamcrest.org/JavaHamcrest/), [Guava](https://github.com/google/guava) - For Unit testing
 
-## TODO
+## TO-DO
 * Implement caching for music loaded from device
 * Implement caching for lyrics crawled once to avoid repeat calls. Possibly map lyrics to song.
 * Further enhance media player by implementing auto play and shuffle
