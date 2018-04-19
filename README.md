@@ -2,7 +2,7 @@
 
 ## Why FunAmp?
 I love music! I have too many songs in my phone and I want to be able to see lyrics in my app itself instead of browsing in google!
-I want to take this not so impressive idea as a base and develop a scalable, testable, robust application. I developed this application for self learning purposes only. Not for commercial use. 
+I want to take this basic idea as a base and develop a scalable, testable, robust application. I developed this application for self learning purposes only. Not for commercial use. 
 
 ## Implementation
 * Used MVP design pattern to make this app scalable considering future enhancements to this idea. In this implementation I implemented one presenter(Music Presenter) with multiple views (MusicView, LyricView) for convenience.
