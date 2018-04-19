@@ -14,11 +14,11 @@ I want to take this basic idea as a base and develop a scalable, testable, robus
 Android SDK 17+
 
 ## Libraries
-* JSoup     - For crawling lyrics from azlyrics.com
-* Gson      - For Serialization nd Deserialization
-* Dagger2   - For dependency injection
-* Espresso  - For instrumentaion testing
-* JUnit, Mockito, Hamcrest, Guava - For Unit testing
+* [JSoup](https://mvnrepository.com/artifact/org.jsoup/jsoup)     - For crawling lyrics from azlyrics.com
+* [Gson](https://github.com/google/gson)      - For Serialization nd Deserialization
+* [Dagger2](https://google.github.io/dagger/)   - For dependency injection
+* [Espresso](https://github.com/googlesamples/android-testing/tree/master/ui/espresso)  - For instrumentaion testing
+* [JUnit](https://mvnrepository.com/artifact/junit/junit), [Mockito](http://site.mockito.org/), [Hamcrest](http://hamcrest.org/JavaHamcrest/), [Guava](https://github.com/google/guava) - For Unit testing
 
 ## TODO
 * Implement caching for music loaded from device
