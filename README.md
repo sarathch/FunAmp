@@ -34,3 +34,7 @@ Sarath
 Please open an issue. Screenshots are also a huge help if the problem is visual.
 
 If you're fixing a bug, Send a pull request!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
