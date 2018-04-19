@@ -110,18 +110,22 @@ public class MusicPresenter implements MusicContract.Presenter {
     @Override
     public void loadSongLyrics() {
         Log.v("mPresenter","fetch song lyrics");
-        String lyrics="";
         if(currentSong!= null && mLyricView!=null){
-            String url = "";
-            String artist = currentSong.getSongArtist().toLowerCase();
-            if(artist.trim().startsWith("the")){
-                artist = artist.substring(3);
-            }
-            artist= artist.replaceAll("\\s+","");
-            String songTitle = currentSong.getSongTitle().toLowerCase().replaceAll("\\s+","");
-            url = "http://azlyrics.com/lyrics/"+artist+"/"+songTitle+".html";
-            new RetrieveSongLyrics(mLyricView).execute(url);
+            loadSongLyrics(currentSong.getSongArtist(), currentSong.getSongTitle());
         }
+    }
+
+    @Override
+    public void loadSongLyrics(String artist, String song) {
+        String url = "";
+        artist = artist.toLowerCase();
+        if(artist.trim().startsWith("the")){
+            artist = artist.substring(3);
+        }
+        artist= artist.replaceAll("\\s+","");
+        song = song.toLowerCase().replaceAll("\\s+","");
+        url = "http://azlyrics.com/lyrics/"+artist+"/"+song+".html";
+        new RetrieveSongLyrics(mLyricView).execute(url);
     }
 
     @Override
@@ -159,6 +163,12 @@ public class MusicPresenter implements MusicContract.Presenter {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            lyricView.showProgressBar();
+        }
+
+        @Override
         protected String doInBackground(String... urls) {
             try{
                 Document doc = Jsoup.connect(urls[0]).get();
@@ -185,7 +195,12 @@ public class MusicPresenter implements MusicContract.Presenter {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            lyricView.showLyrics(s);
+            if(s.isEmpty())
+                lyricView.showNoLyrics();
+            else
+                lyricView.showLyrics(s);
+
+            lyricView.stopProgressBar();
         }
     }
 }

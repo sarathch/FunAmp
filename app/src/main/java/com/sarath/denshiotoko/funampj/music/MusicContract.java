@@ -25,6 +25,12 @@ public interface MusicContract {
 
         void showLyrics(String lyrics);
 
+        void showNoLyrics();
+
+        void showProgressBar();
+
+        void stopProgressBar();
+
     }
 
     interface Presenter {
@@ -40,6 +46,9 @@ public interface MusicContract {
 
         //fetch Lyrics
         void loadSongLyrics();
+
+        //fetch Lyrics with artist name and song name
+        void loadSongLyrics(String artist, String song);
 
         // fetch Current Song
         Song fetchCurrentSongState();

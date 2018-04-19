@@ -1,16 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.sarath.denshiotoko.funampj.music.MusicActivity">
 
-    <TextView
-        android:id="@+id/tv_song"
+    <LinearLayout
+        android:id="@+id/no_lyric_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="15sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/noLyricMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="@string/lyric_not_found"
+            android:layout_marginBottom="8sp" />
+
+        <EditText
+            android:id="@+id/et_enter_artist_name"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="@string/lyric_enter_artist_name"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/et_enter_song_name"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="@string/lyric_enter_song_name"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/bt_get_lyric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:layout_gravity="end"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:text="@string/lyric_search"/>
+
+    </LinearLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/lyric_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_lyric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lyric_no_selection"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"/>
+
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/indeterminateProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lyric_no_selection"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"/>
-
-</ScrollView>
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+</RelativeLayout>

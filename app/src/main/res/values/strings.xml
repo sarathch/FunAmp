@@ -11,4 +11,8 @@
     <string name="music_fragment_title">Songs</string>
     <string name="lyric_fragment_title">Lyrics</string>
     <string name="lyric_no_selection">Play a song to fetch the lyrics!!</string>
+    <string name="lyric_not_found">Lyrics not found! Please enter artist name and song name as accurately as possible to fetch lyrics!!</string>
+    <string name="lyric_enter_artist_name">Enter artist name</string>
+    <string name="lyric_enter_song_name">Enter song name</string>
+    <string name="lyric_search">Get Lyrics</string>
 </resources>
