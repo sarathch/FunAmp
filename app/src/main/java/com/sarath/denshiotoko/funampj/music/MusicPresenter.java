@@ -2,7 +2,6 @@ package com.sarath.denshiotoko.funampj.music;
 
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.sarath.denshiotoko.funampj.data.Song;
 import com.sarath.denshiotoko.funampj.data.source.MusicRepository;
@@ -11,10 +10,6 @@ import com.sarath.denshiotoko.funampj.di.ActivityScoped;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import java.io.IOException;
-import java.lang.annotation.Documented;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -62,11 +57,6 @@ public class MusicPresenter implements MusicContract.Presenter {
         }
     }
 
-    public int return1()
-    {
-        return 1;
-    }
-
     @Override
     public void playSong(Song song) {
         currentSong = song;
@@ -109,7 +99,6 @@ public class MusicPresenter implements MusicContract.Presenter {
 
     @Override
     public void loadSongLyrics() {
-        Log.v("mPresenter","fetch song lyrics");
         if(currentSong!= null && mLyricView!=null){
             loadSongLyrics(currentSong.getSongArtist(), currentSong.getSongTitle());
         }
@@ -117,14 +106,13 @@ public class MusicPresenter implements MusicContract.Presenter {
 
     @Override
     public void loadSongLyrics(String artist, String song) {
-        String url = "";
         artist = artist.toLowerCase();
         if(artist.trim().startsWith("the")){
             artist = artist.substring(3);
         }
         artist= artist.replaceAll("\\s+","");
         song = song.toLowerCase().replaceAll("\\s+","");
-        url = "http://azlyrics.com/lyrics/"+artist+"/"+song+".html";
+        String url = "http://azlyrics.com/lyrics/"+artist+"/"+song+".html";
         new RetrieveSongLyrics(mLyricView).execute(url);
     }
 
@@ -158,7 +146,7 @@ public class MusicPresenter implements MusicContract.Presenter {
 
         private MusicContract.LyricView lyricView;
 
-        public RetrieveSongLyrics(MusicContract.LyricView lyricView) {
+        RetrieveSongLyrics(MusicContract.LyricView lyricView) {
             this.lyricView = lyricView;
         }
 
@@ -172,7 +160,6 @@ public class MusicPresenter implements MusicContract.Presenter {
         protected String doInBackground(String... urls) {
             try{
                 Document doc = Jsoup.connect(urls[0]).get();
-                Log.v("mPresenter",doc.toString());
                 String lyrics = doc.body().toString();
                 //lyrics lies between up_partition and down_partition
                 String start = "<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->";

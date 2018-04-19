@@ -1,6 +1,10 @@
 package com.sarath.denshiotoko.funampj.music;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -35,7 +39,6 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
     @Inject
     Lazy<MusicFragment> musicFragmentProvider;
 
-    private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -48,10 +51,11 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         viewPager = findViewById(R.id.viewpager);
 
@@ -70,6 +74,30 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
+                //Show an alert message and "request the permission" in its "setPositiveButton"
+                //...and in "setOnNegativeButton", just cancel the dialog and do not run the
+                //...functionality that requires this permission (here, ACCESS_FINE_LOCATION)
+                new AlertDialog.Builder(MusicActivity.this)
+                        .setTitle("Permission required")
+                        .setMessage("App needs to read storage to access music in your phone ! ")
+                        .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(MusicActivity.this,
+                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                            }
+
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                finish();
+                            }
+                        })
+                        .show();
 
             } else {
 
@@ -105,8 +133,26 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
+                    new AlertDialog.Builder(MusicActivity.this)
+                            .setTitle("Permission Disabled")
+                            .setMessage("App needs this permission to work! Lets restart the app?")
+                            .setPositiveButton("Restart", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // recreate activity
+                                    recreate();
+                                }
+
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    finish();
+                                }
+                            })
+                            .show();
                 }
-                return;
             }
 
             // other 'case' lines to check for other
@@ -145,7 +191,7 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -159,7 +205,7 @@ public class MusicActivity extends DaggerAppCompatActivity implements MusicFragm
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

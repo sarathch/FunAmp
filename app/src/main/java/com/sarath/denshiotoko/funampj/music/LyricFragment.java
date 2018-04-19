@@ -1,7 +1,6 @@
 package com.sarath.denshiotoko.funampj.music;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -49,10 +48,6 @@ public class LyricFragment extends DaggerFragment implements MusicContract.Lyric
 
     private EditText etArtist, etSong;
 
-    private TextView tvNoLyric;
-
-    private Button btGetLyric;
-
     private ProgressBar progressBar;
 
     @Inject
@@ -86,7 +81,7 @@ public class LyricFragment extends DaggerFragment implements MusicContract.Lyric
         mNoLyricView = root.findViewById(R.id.no_lyric_view);
         etArtist = root.findViewById(R.id.et_enter_artist_name);
         etSong = root.findViewById(R.id.et_enter_song_name);
-        btGetLyric = root.findViewById(R.id.bt_get_lyric);
+        Button btGetLyric = root.findViewById(R.id.bt_get_lyric);
 
         //setup progress bar view
         progressBar = root.findViewById(R.id.indeterminateProgressBar);
