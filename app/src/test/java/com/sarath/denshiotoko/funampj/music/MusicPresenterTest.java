@@ -47,15 +47,15 @@ public class MusicPresenterTest {
 
         // Get a reference to the class under test
         musicPresenter = new MusicPresenter(musicRepository);
-        musicPresenter.takeView(musicView);
+        musicPresenter.takeMusicView(musicView);
 
         // The presenter won't update the view unless it's active.
         when(musicView.isActive()).thenReturn(true);
 
         // We start the tasks to 3, with one active and two completed
         // We start the tasks to 3, with one active and two completed
-        SONGS = Lists.newArrayList(new Song(1L, "Description1","Data1"),
-                new Song(2L, "Description2", "Data2"), new Song(3L, "Description3", "Data3"));
+        SONGS = Lists.newArrayList(new Song(1L, "Description1","Artist1", "Data1"),
+                new Song(2L, "Description2","Artist2", "Data2"), new Song(3L, "Description3", "Artist3","Data3"));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class MusicPresenterTest {
     @Test
     public void clickOnSong_showSongMessage_Error() {
         // Given a stubbed active task
-        Song requestedSong = new Song(1L,"Details Requested", "For this song");
+        Song requestedSong = new Song(1L,"Details Requested","Artist" ,"For this song");
 
         // When open task details is requested
         musicPresenter.playSong(requestedSong);
